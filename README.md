@@ -1,6 +1,6 @@
 ## alt_llama-cpp-python
 
-llama.cppのllama-serverをllama-cpp-pythonライクに操作するライブラリ
+[llama.cpp](https://github.com/ggerganov/llama.cpp)のllama-serverを[llama-cpp-python](https://github.com/abetlen/llama-cpp-python)ライクに操作するライブラリ
 
 ## 必要なライブラリ
     openai
