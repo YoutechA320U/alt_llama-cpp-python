@@ -15,9 +15,8 @@ model=alt_llama_cpp.start_llama_server(
 #使用例1(通常出力)
 if model is not None:
  system_prompt="あなたは優秀で誠実なアシスタントです"
- prompt = "こんにちは"
- response = alt_llama_cpp.response(system_prompt,
-                                   prompt,
+ prompt = system_prompt+"こんにちは"
+ response = alt_llama_cpp.response(prompt,
                                    stream=False)
  #通常出力の処理
  output = response.choices[0].message.content
@@ -26,9 +25,9 @@ if model is not None:
 #使用例2(ストリーミング出力)
 if model is not None:
  system_prompt="あなたは優秀で誠実なアシスタントです"
- prompt = "東京の魅力を100文字で教えて"
- response = alt_llama_cpp.response(system_prompt,
-                                   prompt,
+ prompt = system_prompt+"東京の魅力を100文字で教えて"
+ response = alt_llama_cpp.response(prompt,
+                                   max_tokens=512,
                                    temperature = 0.6,
                                    top_p=0.95, 
                                    stop=["<|stop|>"] ,
