@@ -97,7 +97,7 @@ def stop_llama_server():
 # 使用例
 #stop_llama_server()
 
-def response(system_prompt,prompt,temperature=0.8, top_p=0.95, stop=None, stream=False):
+def response(prompt,max_tokens=16,temperature=0.8, top_p=0.95, stop=None, stream=False):
     """
     起動中の llama-server.exe に回答してもらう関数
     """
@@ -107,7 +107,6 @@ def response(system_prompt,prompt,temperature=0.8, top_p=0.95, stop=None, stream
     )
     
     messages = [
-        {"role": "system", "content": system_prompt},
         {"role": "user", "content": prompt},
     ]
     
@@ -116,6 +115,7 @@ def response(system_prompt,prompt,temperature=0.8, top_p=0.95, stop=None, stream
     response = client.chat.completions.create(
         model="gpt-4",
         messages=messages,
+        max_tokens=max_tokens,
         temperature=temperature,
         top_p=top_p,
         stop=stop if stop is not None else [],
@@ -125,24 +125,28 @@ def response(system_prompt,prompt,temperature=0.8, top_p=0.95, stop=None, stream
     
     return response
 
-# 使用例1
+#使用例1(通常出力)
 #system_prompt="あなたは優秀で誠実なアシスタントです"
-#prompt = "東京の魅力を100文字で教えて"
-#response = alt_llama_cpp.response(system_prompt,prompt,stream=True)
-#print(response)
-# ストリーミング出力の処理
+#prompt = system_prompt+"こんにちは"
+#response = alt_llama_cpp.response(prompt,
+#                                  stream=False)
+#通常出力の処理
+#output = response.choices[0].message.content
+#print(output)
+#
+#alt_llama_cpp.stop_llama_server()#llama-serverを終了してVRAM/RAMを開放する
+#使用例2(ストリーミング出力)
+#system_prompt="あなたは優秀で誠実なアシスタントです"
+#prompt = system_prompt+"東京の魅力を100文字で教えて"
+#response = alt_llama_cpp.response(prompt,
+#                                  max_tokens=512,
+#                                  temperature = 0.6,
+#                                  top_p=0.95, 
+#                                  stop=["<|stop|>"] ,
+#                                  stream=True)
+#ストリーミング出力の処理
 #for chunk in response:
 #    output =  chunk.choices[0].delta.content
 #    if output:
 #       print(output,end="",flush=True)
-#alt_llama_cpp.stop_llama_server()
-
-# 使用例2
-#system_prompt="あなたは優秀で誠実なアシスタントです"
-#prompt = "東京の魅力を100文字で教えて"
-#response = alt_llama_cpp.response(system_prompt,prompt,stream=False)
-#print(response)
-# 通常出力の処理
-#output = response.choices[0].message.content
-#print(output)
-#alt_llama_cpp.stop_llama_server()
+#alt_llama_cpp.stop_llama_server()#llama-serverを終了してVRAM/RAMを開放する
