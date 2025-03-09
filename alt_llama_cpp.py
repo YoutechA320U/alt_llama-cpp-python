@@ -97,9 +97,20 @@ def stop_llama_server():
 # 使用例
 #stop_llama_server()
 
-def response(prompt,max_tokens=16,temperature=0.8, top_p=0.95, stop=None, stream=False):
+def response(prompt,max_tokens=16,temperature=0.8, top_p=0.95, frequency_penalty=0.0, presence_penalty=0.0,seed=-1,stop=None, stream=False):
     """
     起動中の llama-server.exe に回答してもらう関数
+
+    Args:
+        prompt (str): プロント (デフォルト: None)
+        max_tokens (int): 最大出力トークン (デフォルト: 16)
+        temperature (Optional[float]): 温度 (デフォルト: 0.8)
+        top_p (Optional[float]):  (デフォルト: 0.95)
+        frequency_penalty (Optional[float]):  (デフォルト: 0.0)
+        presence_penalty (Optional[float]):  (デフォルト: 0.0)
+        seed (Optional[int]): シード値 (デフォルト: -1)
+        stop (Optional[list[str]]): ストップトークン (デフォルト: None)
+        stream (Optional[bool]): ストリーミング出力する (デフォルト: False)
     """
     client = OpenAI(
         api_key="YOUR_API_KEY",
@@ -118,6 +129,9 @@ def response(prompt,max_tokens=16,temperature=0.8, top_p=0.95, stop=None, stream
         max_tokens=max_tokens,
         temperature=temperature,
         top_p=top_p,
+        frequency_penalty=frequency_penalty,
+        presence_penalty=presence_penalty,
+        seed=seed,
         stop=stop if stop is not None else [],
         stream=stream,
         stream_options=stream_options,
